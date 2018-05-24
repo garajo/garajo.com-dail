@@ -1,0 +1,103 @@
+<Keyboard on:char="handleKeyboardInput(event)"></Keyboard>
+<HighlightLetters bind:word=word bind:currentIndex=currentCharIndex></HighlightLetters>
+<VocabList bind:words=words></VocabList>
+<audio id="audioplayer">
+  Your browser does not support the
+  <code>audio</code>
+  element.
+</audio>
+<svelte:window on:keydown="handleKeyboardInput(event)" />
+
+<script>
+  import HighlightLetters from './HighlightLetters.html'
+  import Keyboard from './Keyboard-dvorak.html'
+  import VocabList from './VocabList.html'
+
+  export default {
+    data() {
+      return {
+        word: '',
+        currentIndex: 0,
+        currentCharIndex: 0,
+        submitWord: '',
+        audioPlayer: undefined,
+      }
+    },
+    oncreate() {
+      const {
+        currentIndex,
+        words
+      } = this.get()
+      this.set({
+        word: words[currentIndex],
+        audioPlayer: window.document.querySelector('#audioplayer'),
+      })
+    },
+    components: {
+      HighlightLetters,
+      Keyboard,
+      VocabList,
+    },
+    methods: {
+      handleKeyboardInput(event) {
+        const {
+          key,
+        } = event
+
+        const {
+          audioPlayer,
+          currentCharIndex,
+          currentIndex,
+          submitWord,
+          word,
+          words,
+        } = this.get()
+        const targetChar = word[currentCharIndex]
+        const min = 1,
+          max = 3
+        const randSound = Math.round(Math.random() * (max - min)) + min
+
+        audioPlayer.pause()
+
+        if (targetChar.toLowerCase() === key.toLowerCase()) {
+          audioplayer.src = `./assets/yes${randSound}.wav`
+
+          if (`${submitWord}${targetChar}` === word) {
+            
+            if (words.length - 1 === currentIndex) {
+              const restartIndex = 0
+              this.set({
+                submitWord: '',
+                currentCharIndex: restartIndex,
+                currentIndex: restartIndex,
+                word: words[restartIndex]
+              })
+            } else {
+              const nextIndex = currentIndex + 1
+              this.set({
+                submitWord: '',
+                currentCharIndex: 0,
+                currentIndex: nextIndex,
+                word: words[nextIndex]
+              })
+            }
+
+          } else {
+            this.set({
+            submitWord: `${submitWord}${targetChar}`,
+              currentCharIndex: currentCharIndex + 1,
+            })
+          }
+
+      } else {
+        audioplayer.src = `./assets/no${randSound}.wav`
+      }
+
+      audioplayer.play().catch((err) => {
+        console.log(err)
+      })
+    }
+  },
+}
+
+</script>

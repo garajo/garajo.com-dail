@@ -1,0 +1,51 @@
+<div>
+  <h2>highlight-letters</h2>
+  <ul>
+    {#each word.split('') as char, index}
+      <li class={index >= currentIndex ? 'highlighted' : 'wordchar' }>
+        {char}
+      </li>
+    {/each}
+  </ul>
+</div>
+
+<style>
+  ul {
+    display: flex;
+  }
+
+  li {
+    margin: .2rem;
+    font-size: 5rem;
+    list-style-type: none;
+  }
+
+  .highlighted {
+    color: #090;
+    text-decoration: underline;
+    white-space: pre;
+  }
+
+  .wordchar {
+    color: #ccc;
+  }
+  
+</style>
+
+
+<script>
+  export default {
+    data() {
+      return {        
+        highlightIndexes: new Set([]),
+      }
+    },
+    oncreate() {
+
+    },
+    onupdate() {
+      const { currentIndex, highlightIndexes } = this.get()
+      highlightIndexes.add(currentIndex)
+    },
+  }
+</script>
