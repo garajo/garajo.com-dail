@@ -1,5 +1,12 @@
-<Keyboard on:char="handleKeyboardInput(event)"></Keyboard>
-<HighlightLetters bind:word=word bind:currentIndex=currentCharIndex></HighlightLetters>
+<Keyboard 
+  on:char='handleKeyboardInput(event)' 
+  bind:char='lastChar'
+  hide={['punc', 'glyphs']}
+></Keyboard>
+<HighlightLetters 
+  bind:word=word 
+  bind:currentIndex=currentCharIndex
+></HighlightLetters>
 <VocabList bind:words=words></VocabList>
 <audio id="audioplayer">
   Your browser does not support the
@@ -17,6 +24,7 @@
     data() {
       return {
         word: '',
+        lastChar: '',
         currentIndex: 0,
         currentCharIndex: 0,
         submitWord: '',
@@ -69,6 +77,7 @@
               this.set({
                 submitWord: '',
                 currentCharIndex: restartIndex,
+                lastChar: 0,
                 currentIndex: restartIndex,
                 word: words[restartIndex]
               })
@@ -77,15 +86,18 @@
               this.set({
                 submitWord: '',
                 currentCharIndex: 0,
+                lastChar: word[currentCharIndex],
                 currentIndex: nextIndex,
                 word: words[nextIndex]
               })
             }
 
-          } else {
+          }
+          else {
             this.set({
             submitWord: `${submitWord}${targetChar}`,
               currentCharIndex: currentCharIndex + 1,
+              lastChar: word[currentCharIndex],
             })
           }
 
