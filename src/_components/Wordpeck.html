@@ -1,7 +1,7 @@
 <Keyboard
   on:char=handleKeyboardInput(event)
   bind:char=lastChar
-  hide={['punc', 'glyphs']}
+  hiddenClasses={['punc', 'glyphs']}
 ></Keyboard>
 <AlphaPick
   on:char=handleUpdateKeyChar(event)
