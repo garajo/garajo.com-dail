@@ -1,9 +1,13 @@
 <Keyboard
-  on:char='handleKeyboardInput(event)'
-  bind:char='lastChar'
+  on:char=handleKeyboardInput(event)
+  bind:char=lastChar
   hide={['punc', 'glyphs']}
 ></Keyboard>
-<AlphaPick></AlphaPick>
+<AlphaPick
+  on:char=handleUpdateKeyChar(event)
+  bind:keyChar=keyChar
+>
+</AlphaPick>
 <HighlightLetters
   bind:word=word
   bind:currentIndex=currentCharIndex
@@ -28,7 +32,7 @@
         audioPlayer: undefined,
         currentCharIndex: 0,
         currentIndex: 0,
-        keyIndex: '',
+        keyChar: 'a',
         lastChar: '',
         submitWord: '',
         word: '',
@@ -42,8 +46,6 @@
         keyIndex,
       } = this.get()
 
-      console.log('keyIndex', keyIndex)
-
       this.set({
         word: words[currentIndex],
         audioPlayer: window.document.querySelector('#audioplayer'),
@@ -56,6 +58,11 @@
       VocabList,
     },
     methods: {
+      handleUpdateKeyChar(event) {
+        this.set({
+          keyChar: event.char,
+        })
+      },
       handleKeyboardInput(event) {
         const {
           key,
@@ -114,11 +121,11 @@
         audioplayer.src = `./assets/no${randSound}.wav`
       }
 
-      audioplayer.play().catch((err) => {
-        console.log(err)
-      })
-    }
-  },
-}
+        audioplayer.play().catch((err) => {
+          console.log(err)
+        })
+      }
+    },
+  }
 
 </script>

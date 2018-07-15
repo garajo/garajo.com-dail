@@ -1,31 +1,58 @@
 <div id="slot">
   <input readonly value="test" />
 </div>
-
+  <ul id="alphapick">
+	{#each keys as char}
+    <li>
+      {#if char === keyChar}
+        <span style='color:red;'>{char}</span>
+      {:else}
+        {char}
+      {/if}
+    </li>
+	{/each}
+</ul>
+<style>
+  ul {
+    pointer-events: none;
+    display: flex;
+  }
+  ul li {
+    pointer-events: fill;
+    list-style-type: none;
+    font-size: 2rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+</style>
 <script>
   export default {
     oncreate() {
 			// this fires when the component has been
 			// rendered to the DOM
-			console.log('in oncreate');
+      const { keys, keyChar } = this.get()
 
-      const slot = document.getElementById('slot')
-      const alphabet = 'abc'
-      console.log('alphabet', alphabet)
-      console.log('slot', slot)
-      // slot.innerHTML = alphabet
-      slot.addEventListener('mouseover', (ev) => {
-        console.log('ev.target', ev.target)
-        console.log('ev.target', ev.target.value)
+      if (typeof keys === 'string') {
+        this.set({
+          keys: keys.split('')
+        })
+      }
+
+      const alphapick = document.getElementById('alphapick')
+      alphapick.addEventListener('click', (ev) => {
+        const { textContent } = ev.target
+        this.fire('char', {
+          char: textContent,
+        })
       })
-
-			// this.interval = setInterval(() => {
-			// 	this.set({ time: new Date() });
-			// }, 1000);
 
 		},
     data() {
-
+      return {
+        keyChar: 'a',
+        keys: 'abcdefghijklmnopqrstuvwxyz'.split(''),
+      }
     },
   }
 </script>
