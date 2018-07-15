@@ -1,10 +1,11 @@
-<Keyboard 
-  on:char='handleKeyboardInput(event)' 
+<Keyboard
+  on:char='handleKeyboardInput(event)'
   bind:char='lastChar'
   hide={['punc', 'glyphs']}
 ></Keyboard>
-<HighlightLetters 
-  bind:word=word 
+<AlphaPick></AlphaPick>
+<HighlightLetters
+  bind:word=word
   bind:currentIndex=currentCharIndex
 ></HighlightLetters>
 <VocabList bind:words=words></VocabList>
@@ -19,29 +20,37 @@
   import HighlightLetters from './HighlightLetters.html'
   import Keyboard from './Keyboard-dvorak.html'
   import VocabList from './VocabList.html'
+  import AlphaPick from './AlphaPick.html'
 
   export default {
     data() {
       return {
-        word: '',
-        lastChar: '',
-        currentIndex: 0,
-        currentCharIndex: 0,
-        submitWord: '',
         audioPlayer: undefined,
+        currentCharIndex: 0,
+        currentIndex: 0,
+        keyIndex: '',
+        lastChar: '',
+        submitWord: '',
+        word: '',
+        words: '',
       }
     },
     oncreate() {
       const {
         currentIndex,
-        words
+        words,
+        keyIndex,
       } = this.get()
+
+      console.log('keyIndex', keyIndex)
+
       this.set({
         word: words[currentIndex],
         audioPlayer: window.document.querySelector('#audioplayer'),
       })
     },
     components: {
+      AlphaPick,
       HighlightLetters,
       Keyboard,
       VocabList,
@@ -71,7 +80,7 @@
           audioplayer.src = `./assets/yes${randSound}.wav`
 
           if (`${submitWord}${targetChar}` === word) {
-            
+
             if (words.length - 1 === currentIndex) {
               const restartIndex = 0
               this.set({

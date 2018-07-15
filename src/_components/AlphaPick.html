@@ -1,0 +1,31 @@
+<div id="slot">
+  <input readonly value="test" />
+</div>
+
+<script>
+  export default {
+    oncreate() {
+			// this fires when the component has been
+			// rendered to the DOM
+			console.log('in oncreate');
+
+      const slot = document.getElementById('slot')
+      const alphabet = 'abc'
+      console.log('alphabet', alphabet)
+      console.log('slot', slot)
+      // slot.innerHTML = alphabet
+      slot.addEventListener('mouseover', (ev) => {
+        console.log('ev.target', ev.target)
+        console.log('ev.target', ev.target.value)
+      })
+
+			// this.interval = setInterval(() => {
+			// 	this.set({ time: new Date() });
+			// }, 1000);
+
+		},
+    data() {
+
+    },
+  }
+</script>
