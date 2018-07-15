@@ -59,9 +59,20 @@
     },
     methods: {
       handleUpdateKeyChar(event) {
-        this.set({
-          keyChar: event.char,
-        })
+        const { words } = this.get()
+        const { char } = event
+        const { index, word } = ((char) => {
+          const index = words.findIndex(ea => ea[0] === char )
+          return { index, word: words[index]}
+        })(char)
+
+        if (index && word) {
+          this.set({
+            keyChar: char,
+            currentIndex: index,
+            word,
+          })
+        }
       },
       handleKeyboardInput(event) {
         const {
@@ -104,7 +115,8 @@
                 currentCharIndex: 0,
                 lastChar: word[currentCharIndex],
                 currentIndex: nextIndex,
-                word: words[nextIndex]
+                word: words[nextIndex],
+                keyChar: words[nextIndex][0],
               })
             }
 
