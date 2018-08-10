@@ -134,14 +134,12 @@
       } else {
         audioplayer.src = `./assets/no${randSound}.wav`
       }
-
-        const isPlaying = audioplayer.currentTime > 0 && !audioplayer.paused && !audioplayer.ended && audioplayer.readyState > 2;
         
-        if (!isPlaying) {
-          audioplayer.play().catch((err) => {
-            console.log(err)
-          })
-        }
+        (audioplayer.currentTime > 0 && !audioplayer.paused && !audioplayer.ended && audioplayer.readyState > 2)
+        ||
+        audioplayer.play().catch((err) => {
+          console.log(err)
+        })
       }
     },
   }
