@@ -135,9 +135,13 @@
         audioplayer.src = `./assets/no${randSound}.wav`
       }
 
-        audioplayer.play().catch((err) => {
-          console.log(err)
-        })
+        const isPlaying = audioplayer.currentTime > 0 && !audioplayer.paused && !audioplayer.ended && audioplayer.readyState > 2;
+        
+        if (!isPlaying) {
+          audioplayer.play().catch((err) => {
+            console.log(err)
+          })
+        }
       }
     },
   }
