@@ -65,12 +65,14 @@
           const index = words.findIndex(ea => ea[0] === char )
           return { index, word: words[index]}
         })(char)
-
+        
         if (index && word) {
           this.set({
             keyChar: char,
             currentIndex: index,
             word,
+            currentCharIndex: 0,
+            submitWord: '',
           })
         }
       },
